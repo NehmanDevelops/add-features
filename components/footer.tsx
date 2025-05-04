@@ -8,7 +8,7 @@ import { socialMedia } from "@/data";
 
 export const Footer = () => {
   return (
-    <footer id="contact" className="mb-[100px] w-full pb-10 md:mb-auto">
+    <footer id="contact" className="w-full pb-10">
       <div className="absolute -bottom-72 left-0 min-h-96 w-full">
         <Image
           src="/footer-grid.svg"
@@ -20,24 +20,14 @@ export const Footer = () => {
       </div>
 
       <div className="flex flex-col items-center">
-        <h1 className="heading lg:max-w-[45vw]">
-          Ready to take <span className="text-purple">your</span> digital
-          presence to the next level?
-        </h1>
-
-        <p className="my-5 text-center text-white-200 md:mt-10">
-          Reach out to me today and let&apos;s discuss how I can help your
-          achieve your goals.
-        </p>
-
         <Link
           href={`mailto:${links.ownerEmail}`}
           target="_blank"
           rel="noreferrer noopener"
-          className="md:mt-10"
+          className="mt-4"
         >
           <MagicButton
-            title="Let's get in touch"
+            title="Return to Home"
             icon={<FaLocationArrow />}
             position="right"
             asChild
@@ -49,20 +39,17 @@ export const Footer = () => {
         <p className="text-sm font-light md:text-base md:font-normal">
           Copyright &copy; {new Date().getFullYear()}{" "}
           <Link
-            href="https://sanidhy.me"
+            href="PinPoint"
             target="_blank"
             rel="noreferrer noopener"
             className="text-purple"
           >
-            Sanidhya
+            PinPoint
           </Link>{" "}
-          |{" "}
-          <Link href={links.sourceCode} className="underline">
-            Source Code
-          </Link>
+          | <span className="underline">GDSC HACKS</span>
         </p>
 
-        <div className="flex items-center gap-6 md:gap-3">
+        <div className="flex items-center gap-6 md:gap-3 mt-4 md:mt-0">
           {socialMedia.map((profile) => (
             <Link
               key={profile.name}

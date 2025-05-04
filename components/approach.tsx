@@ -2,112 +2,120 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
 import { MagicButton } from "@/components/ui/magic-button";
 
 export const Approach = () => {
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+
   return (
-    <section className="w-full py-20">
-      <h1 className="heading">
-        My <span className="text-purple">approach</span>
-      </h1>
+    <section className="w-full py-12">
+<h1 className="heading text-center text-3xl font-bold">
+  <span className="text-red">PinPoints'</span> Additional Features
+</h1>
 
-      <div className="my-20 flex flex-col items-center justify-center gap-4 lg:flex-row">
-        <Card
-          title="Planning & Strategy"
-          icon={<MagicButton title="Phase 1" asChild />}
-          description="We'll collaborate to map out your website's goals, target audience, and key functionalities. We'll discuss things like site structure, navigation, and content requirements."
-        >
-          <CanvasRevealEffect
-            animationSpeed={5.1}
-            containerClassName="bg-emerald-900"
-          />
-        </Card>
 
-        <Card
-          title="Deployment & Progress Update"
-          icon={<MagicButton title="Phase 2" asChild />}
-          description="Once we agree on the plan, I cue my lofi playlist and dive into coding. From initial sketches to polished code, I keep you updated every step of the way."
-        >
-          <CanvasRevealEffect
-            animationSpeed={3}
-            containerClassName="bg-black"
-            colors={[
-              [236, 72, 153],
-              [232, 121, 249],
-            ]}
-            dotSize={2}
-          />
-        </Card>
+      <div className="my-10 flex flex-col items-center justify-center gap-4 lg:flex-row">
+        {/* ✅ Card 1: Cardio Compass */}
+        <CardWithImage
+          hovered={hoveredCard === "cardio"}
+          setHovered={(v) => setHoveredCard(v ? "cardio" : null)}
+          image="cardioCompass.png"
+          title="Lose Weight Quicker (COMING SOON!)"
+          description="No more guessing at the gym. Cardio Compass guides you to the perfect machine for your fitness goals—burn fat, build stamina, or go beast mode, all based on your personal profile."
+          buttonTitle="Cardio Compass"
+        />
 
-        <Card
-          title="Development & Launch"
-          icon={<MagicButton title="Phase 3" asChild />}
-          description="This is where the magic happens! Based on the approved design, I'll translate everything into functional code, building your website from the ground up."
-        >
-          <CanvasRevealEffect
-            animationSpeed={3}
-            containerClassName="bg-sky-600"
-            colors={[[125, 211, 252]]}
-          />
-        </Card>
+        {/* ✅ Card 2: MealSync AI */}
+        <CardWithImage
+          hovered={hoveredCard === "meal"}
+          setHovered={(v) => setHoveredCard(v ? "meal" : null)}
+          image="mealai.png"
+          title="Meal Planning AI (COMING SOON!)"
+          description="Syncs meals to your habits, schedule, and health preferences with smart suggestions."
+          buttonTitle="MealSync AI"
+        />
+
+        {/* ✅ Card 3: CampusChef */}
+        <CardWithImage
+          hovered={hoveredCard === "chef"}
+          setHovered={(v) => setHoveredCard(v ? "chef" : null)}
+          image="campusChef.png"
+          title="Campus Cooking (COMING SOON!)"
+          description="Curated meal plans and recipes for students with limited time and budgets."
+          buttonTitle="CampusChef"
+        />
       </div>
     </section>
   );
 };
 
-type CardProps = {
+// 🔁 Image-based card
+const CardWithImage = ({
+  hovered,
+  setHovered,
+  image,
+  title,
+  description,
+  buttonTitle,
+}: {
+  hovered: boolean;
+  setHovered: (v: boolean) => void;
+  image: string;
   title: string;
   description: string;
-  icon: React.ReactNode;
-  children?: React.ReactNode;
-};
-
-const Card = ({ title, description, icon, children }: CardProps) => {
-  const [hovered, setHovered] = useState(false);
-
+  buttonTitle: string;
+}) => {
   return (
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="group/canvas-card relative mx-auto flex w-full max-w-sm items-center justify-center rounded-3xl border border-black/[0.2] p-4 dark:border-white/[0.2] lg:h-[35rem]"
+      className="relative mx-auto flex w-full max-w-[17rem] items-center justify-center rounded-2xl border-[3px] border-red-600 p-4 lg:h-[22rem] overflow-hidden"
     >
-      <Icon className="absolute -left-3 -top-3 h-6 w-6 text-black dark:text-white" />
-      <Icon className="absolute -bottom-3 -left-3 h-6 w-6 text-black dark:text-white" />
-      <Icon className="absolute -right-3 -top-3 h-6 w-6 text-black dark:text-white" />
-      <Icon className="absolute -bottom-3 -right-3 h-6 w-6 text-black dark:text-white" />
+      {/* ✅ Background image with inline style */}
+      <motion.div
+        initial={false}
+        animate={{ opacity: hovered ? 0 : 1 }}
+        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat transition-opacity duration-300"
+        style={{ backgroundImage: `url('/${image}')` }}
+      />
 
+      {/* ✅ Center button */}
+      <motion.div
+        initial={false}
+        animate={{ opacity: hovered ? 0 : 1 }}
+        className="absolute left-1/2 top-1/2 z-10 flex w-full -translate-x-1/2 -translate-y-1/2 items-center justify-center text-center transition duration-300"
+      >
+        <MagicButton title={buttonTitle} asChild />
+      </motion.div>
+
+      {/* ✅ Hover content */}
       <AnimatePresence>
         {hovered && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="absolute inset-0 h-full w-full"
+            exit={{ opacity: 0 }}
+            className="relative z-20 text-center"
           >
-            {children}
+            <h2 className="text-lg font-bold text-white">{title}</h2>
+            <p
+              className="mt-2 text-sm font-medium text-white"
+              style={{ color: "#e4ecff" }}
+            >
+              {description}
+            </p>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="relative z-20">
-        <div className="absolute left-[50%] top-[50%] mx-auto flex w-full -translate-x-[50%] -translate-y-[50%] items-center justify-center text-center transition duration-200 group-hover/canvas-card:-translate-y-4 group-hover/canvas-card:opacity-0">
-          {icon}
-        </div>
-
-        <h2 className="relative z-10 mt-4 text-3xl font-bold text-black opacity-0 transition  duration-200 group-hover/canvas-card:-translate-y-2 group-hover/canvas-card:text-white group-hover/canvas-card:opacity-100 dark:text-white">
-          {title}
-        </h2>
-
-        <p
-          className="relative z-10 mt-4 text-sm font-bold text-black opacity-0 transition  duration-200 group-hover/canvas-card:-translate-y-2 group-hover/canvas-card:text-white group-hover/canvas-card:opacity-100 dark:text-white"
-          style={{
-            color: "#e4ecff",
-          }}
-        >
-          {description}
-        </p>
-      </div>
+      {/* 🧩 decorative corners */}
+      <Icon className="absolute -left-2 -top-2 h-4 w-4 text-white/40" />
+      <Icon className="absolute -bottom-2 -left-2 h-4 w-4 text-white/40" />
+      <Icon className="absolute -right-2 -top-2 h-4 w-4 text-white/40" />
+      <Icon className="absolute -bottom-2 -right-2 h-4 w-4 text-white/40" />
     </div>
   );
 };
